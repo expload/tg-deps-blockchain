@@ -1,0 +1,60 @@
+{
+	"ABI version": 0,
+	"functions": [{
+		"name": "constructor",
+		"inputs": [
+		],
+		"outputs": [
+		]
+	}, {
+		"name": "assertIsContractOwner",
+		"inputs": [
+		],
+		"outputs": [
+		]
+	}, {
+		"name": "makeBet",
+		"inputs": [
+			{"name":"roomId","type":"uint256"}
+		],
+		"outputs": [
+		]
+	}, {
+		"name": "getBet",
+		"inputs": [
+			{"name":"playerAddress","type":"uint256"},
+			{"name":"roomId","type":"uint256"}
+		],
+		"outputs": [
+			{"name":"value0","type":"uint256"}
+		]
+	}, {
+		"name": "givePrize",
+		"inputs": [
+			{"name":"winner","type":"uint256"},
+			{"name":"prizeSize","type":"uint256"}
+		],
+		"outputs": [
+		]
+	}, {
+		"name": "withdrawPrize",
+		"inputs": [
+		],
+		"outputs": [
+		]
+	}, {
+		"name": "refundBet",
+		"inputs": [
+			{"name":"playerAddress","type":"uint256"},
+			{"name":"roomId","type":"uint256"}
+		],
+		"outputs": [
+		]
+	}, {
+		"name": "withdrawRefund",
+		"inputs": [
+		],
+		"outputs": [
+		]
+	}]
+}

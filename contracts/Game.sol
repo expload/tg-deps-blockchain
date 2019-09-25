@@ -1,28 +1,27 @@
 pragma solidity ^0.5.0;
 
-/// @title Contract managing TON-DePS
 contract Game {
 
-    address public contractOwner;
+    address private contractOwner;
 
     constructor() public{
         contractOwner = msg.sender;
     }
 
     function assertIsContractOwner() public view {
-        require(msg.sender == contractOwner, "Only contract owner can do that!");
+        require(msg.sender == contractOwner); // TODO: add error message: "Only contract owner can do that!"
     }
 
-    mapping(address => mapping(bytes => uint)) bets;
+    mapping(address => mapping(address => uint)) bets;
     mapping(address => uint) prizes;
-    mapping(address => bytes) refunds;
+    mapping(address => address) refunds;
 
-    function makeBet(bytes memory roomId) public payable {
-        require(msg.value > 0, "Invalid bet size!");
+    function makeBet(address roomId) public payable {
+        require(msg.value > 0); // TODO: add error message: "Invalid bet size!"
         bets[msg.sender][roomId] = msg.value;
     }
 
-    function getBet(address playerAddress, bytes memory roomId) public view returns(uint){
+    function getBet(address playerAddress, address roomId) public view returns(uint){
         return bets[playerAddress][roomId];
     }
 
@@ -33,18 +32,18 @@ contract Game {
 
     function withdrawPrize() public {
         uint prize = prizes[msg.sender];
-        require(prize > 0, "You have no prize to withdraw!");
+        require(prize > 0); // TODO: add error message: "You have no prize to withdraw!"
         msg.sender.transfer(prize);
     }
 
-    function refundBet(address playerAddress, bytes memory roomId) public {
+    function refundBet(address playerAddress, address roomId) public {
         assertIsContractOwner();
         refunds[playerAddress] = roomId;
     }
 
     function withdrawRefund() public {
         uint refund = bets[msg.sender][refunds[msg.sender]];
-        require(refund > 0, "You have nothing to refund!");
+        require(refund > 0); // TODO: add error message: "You have nothing to refund!"
         msg.sender.transfer(refund);
     }
 }
