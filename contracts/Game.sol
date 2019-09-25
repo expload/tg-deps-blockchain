@@ -13,22 +13,38 @@ contract Game {
         require(msg.sender == contractOwner, "Only contract owner can do that!");
     }
 
-    struct Bet {
-        bytes roomId;
-        uint amount;
+    mapping(address => mapping(bytes => uint)) bets;
+    mapping(address => uint) prizes;
+    mapping(address => bytes) refunds;
+
+    function makeBet(bytes memory roomId) public payable {
+        require(msg.value > 0, "Invalid bet size!");
+        bets[msg.sender][roomId] = msg.value;
     }
 
-    mapping(address => Bet[]) playerBets;
-    mapping(address => uint) betsAmount;
-
-    function makeBet(bytes memory roomId, uint32 amount) public payable returns(uint) {
-        uint betNumber = betsAmount[msg.sender];
-        playerBets[msg.sender][betNumber] = Bet(roomId, amount);
-        betsAmount[msg.sender] = betNumber + 1;
-        return betNumber;
+    function getBet(address playerAddress, bytes memory roomId) public view returns(uint){
+        return bets[playerAddress][roomId];
     }
 
-    function getBet(address playerAddres, uint betNumber) public view returns(uint){
-        return playerBets[playerAddres][betNumber].amount;
+    function givePrize(address winner, uint prizeSize) public {
+        assertIsContractOwner();
+        prizes[winner] += prizeSize;
+    }
+
+    function withdrawPrize() public {
+        uint prize = prizes[msg.sender];
+        require(prize > 0, "You have no prize to withdraw!");
+        msg.sender.transfer(prize);
+    }
+
+    function refundBet(address playerAddress, bytes memory roomId) public {
+        assertIsContractOwner();
+        refunds[playerAddress] = roomId;
+    }
+
+    function withdrawRefund() public {
+        uint refund = bets[msg.sender][refunds[msg.sender]];
+        require(refund > 0, "You have nothing to refund!");
+        msg.sender.transfer(refund);
     }
 }
