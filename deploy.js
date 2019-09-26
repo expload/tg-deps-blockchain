@@ -1,6 +1,6 @@
 const { TONClient } = require('ton-client-node-js');
 const gamePackage = require('./contract/build/GamePackage');
-const { gameKeys } = require('./secrets');
+const { gameKeys } = require('./utils/secrets');
 
 async function main(ton) {
     try {
