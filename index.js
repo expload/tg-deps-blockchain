@@ -1,2 +1,2 @@
 const { TONClient } = require('ton-client-node-js');
-exports.TONClient = TONClient;
+exports.client = new TONClient();

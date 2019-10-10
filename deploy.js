@@ -1,29 +1,24 @@
 const { TONClient } = require('ton-client-node-js');
-const gamePackage = require('./contract/build/GamePackage');
+const GameContract = require('./contract/build/GameContract');
 const { gameKeys } = require('./utils/secrets');
 
-async function main(ton) {
-    try {
-        const gameAddress = (await ton.contracts.deploy({
-            package: gamePackage,
-            constructorParams: {},
-            keyPair: gameKeys,
-        })).address;
-        console.log(`Game contract was deployed at address: ${gameAddress}`);
-    } catch (error) {
-        console.error(error);
-    }
+async function main(client) {
+    const helloAddress = (await client.contracts.deploy({
+        package: GameContract.package,
+        constructorParams: {},
+        keyPair: gameKeys,
+    })).address;
+    console.log(`Game contract was deployed at address: ${helloAddress}`);
 }
 
 (async () => {
     try {
-        const ton = TONClient.shared;
-        ton.config.setData({
+        const client = new TONClient();
+        client.config.setData({
             servers: ['http://0.0.0.0']
         });
-        await ton.setup();
-        await main(ton);
-        process.exit(0);
+        await client.setup();
+        await main(client);
     } catch (error) {
         console.error(error);
     }

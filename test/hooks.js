@@ -1,14 +1,14 @@
-const { TONClient } = require('../index');
+const { client } = require('../index');
 
 before(async function() {
-    TONClient.shared.config.setData({
+    client.config.setData({
         defaultWorkchain: 0,
         servers: ["http://0.0.0.0"],
         log_verbose: true,
     });
-    await TONClient.shared.setup();
+    await client.setup();
 });
 
 after(function() {
-    TONClient.shared.close();
+    client.close();
 });
